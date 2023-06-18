@@ -14,6 +14,7 @@ class FMULToFADD_fflags extends Bundle {
 class FMULToFADD(val expWidth: Int, val precision: Int) extends Bundle {
   val fp_prod = new FloatPoint(expWidth, 2 * precision)
   val inter_flags = new FMULToFADD_fflags
+  val rm = UInt(3.W)
 }
 
 class FMUL_special_info extends Bundle {
@@ -252,6 +253,7 @@ class FMUL_s3(val expWidth: Int, val precision: Int) extends Module {
   io.to_fadd.inter_flags.isInf := special_case.bits.inf && !special_case.bits.nan
   io.to_fadd.inter_flags.isNaN := special_case.bits.nan
   io.to_fadd.inter_flags.overflow := exp_pre_round > Fill(expWidth, 1.U(1.W))
+  io.to_fadd.rm := rm
 }
 
 class FMUL(val expWidth: Int, val precision: Int) extends Module {
