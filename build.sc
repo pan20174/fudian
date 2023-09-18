@@ -1,18 +1,17 @@
-// import Mill dependency
 import mill._
 import scalalib._
 import scalafmt._
 import coursier.maven.MavenRepository
 
 val defaultVersions = Map(
-  "chisel3" -> "3.5.0",
-  "chisel3-plugin" -> "3.5.0",
-  "scala" -> "2.12.13",
+  "chisel" -> "5.0.0",
+  "chisel-plugin" -> "5.0.0",
+  "scala" -> "2.13.10",
   "chiseltest" -> "latest.integration",
   "scalatest" -> "3.2.7"
 )
 
-def getVersion(dep: String, org: String = "edu.berkeley.cs", cross: Boolean = false) = {
+def getVersion(dep: String, org: String = "org.chipsalliance", cross: Boolean = false) = {
   val version = sys.env.getOrElse(dep + "Version", defaultVersions(dep))
   if (cross)
     ivy"$org:::$dep:$version"
@@ -33,14 +32,14 @@ object fudian extends SbtModule with ScalaModule with ScalafmtModule {
   def scalaVersion = defaultVersions("scala")
 
 
-  override def scalacPluginIvyDeps = super.scalacPluginIvyDeps() ++ Agg(getVersion("chisel3-plugin", cross = true))
+  override def scalacPluginIvyDeps = super.scalacPluginIvyDeps() ++ Agg(getVersion("chisel-plugin", cross = true))
 
   override def ivyDeps = super.ivyDeps() ++ Agg(
-    getVersion("chisel3"),
-    getVersion("chiseltest")
+    getVersion("chisel"),
+    getVersion("chiseltest", "edu.berkeley.cs")
   )
 
-  object tests extends Tests {
+  object test extends SbtModuleTests with TestModule.ScalaTest {
     override def ivyDeps = super.ivyDeps() ++ Agg(
       getVersion("scalatest","org.scalatest")
     )
