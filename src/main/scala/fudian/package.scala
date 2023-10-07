@@ -8,6 +8,7 @@ package object fudian {
   def RDN: UInt = 2.U(3.W)
   def RUP: UInt = 3.U(3.W)
   def RMM: UInt = 4.U(3.W)
+  def ROD: UInt = 5.U(3.W)
 
   class FPDecodeBundle extends Bundle {
     val expNotZero = Bool()

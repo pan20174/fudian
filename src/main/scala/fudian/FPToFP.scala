@@ -124,7 +124,7 @@ class FPDownConverter(
   val may_be_subnormal = down_exp < 1.S
 
   val rmin =
-    io.rm === RTZ || (io.rm === RDN && !fp_in.sign) || (io.rm === RUP && fp_in.sign)
+    io.rm === ROD || io.rm === RTZ || (io.rm === RDN && !fp_in.sign) || (io.rm === RUP && fp_in.sign)
 
   val normal_of_exp = Mux(
     rmin,
